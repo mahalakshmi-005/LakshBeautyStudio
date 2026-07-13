@@ -17,5 +17,6 @@ namespace LakshBeautyStudio.Models
         public bool IsActive { get; set; } = true;
 
         public DateTime UploadedAt { get; set; } = DateTime.Now;
+        public string? PublicId { get; set; }
     }
 }

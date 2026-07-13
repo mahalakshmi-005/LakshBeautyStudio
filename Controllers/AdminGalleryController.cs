@@ -1,3 +1,5 @@
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using LakshBeautyStudio.Data;
 using LakshBeautyStudio.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -10,13 +12,13 @@ namespace LakshBeautyStudio.Controllers
     public class AdminGalleryController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment _env;
+        private readonly Cloudinary _cloudinary;
         private static readonly string[] AllowedExtensions = { ".jpg", ".jpeg", ".png", ".webp" };
 
-        public AdminGalleryController(ApplicationDbContext context, IWebHostEnvironment env)
+        public AdminGalleryController(ApplicationDbContext context, Cloudinary cloudinary)
         {
             _context = context;
-            _env = env;
+            _cloudinary = cloudinary;
         }
 
         // GET: /AdminGallery/Index
@@ -50,20 +52,28 @@ namespace LakshBeautyStudio.Controllers
                 return RedirectToAction("Index");
             }
 
-            var galleryFolder = Path.Combine(_env.WebRootPath, "images", "gallery");
-            Directory.CreateDirectory(galleryFolder);
-
-            var uniqueFileName = $"{Guid.NewGuid()}{extension}";
-            var filePath = Path.Combine(galleryFolder, uniqueFileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            // Upload to Cloudinary instead of local disk
+            await using var stream = file.OpenReadStream();
+            var uploadParams = new ImageUploadParams
             {
-                await file.CopyToAsync(stream);
+                File = new FileDescription(file.FileName, stream),
+                Folder = "laksh-beauty-gallery",
+                UniqueFilename = true,
+                Overwrite = false
+            };
+
+            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+            if (uploadResult.Error != null)
+            {
+                TempData["Error"] = $"Upload failed: {uploadResult.Error.Message}";
+                return RedirectToAction("Index");
             }
 
             _context.GalleryImages.Add(new GalleryImage
             {
-                ImagePath = $"/images/gallery/{uniqueFileName}",
+                ImagePath = uploadResult.SecureUrl.ToString(),
+                PublicId = uploadResult.PublicId,
                 Caption = caption,
                 DisplayOrder = displayOrder,
                 IsActive = true,
@@ -83,11 +93,11 @@ namespace LakshBeautyStudio.Controllers
             var image = await _context.GalleryImages.FindAsync(id);
             if (image != null)
             {
-                // Remove the physical file if it exists
-                var physicalPath = Path.Combine(_env.WebRootPath, image.ImagePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
-                if (System.IO.File.Exists(physicalPath))
+                // Remove from Cloudinary if it has a PublicId
+                if (!string.IsNullOrEmpty(image.PublicId))
                 {
-                    System.IO.File.Delete(physicalPath);
+                    var deleteParams = new DeletionParams(image.PublicId);
+                    await _cloudinary.DestroyAsync(deleteParams);
                 }
 
                 _context.GalleryImages.Remove(image);

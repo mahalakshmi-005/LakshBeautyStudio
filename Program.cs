@@ -2,12 +2,21 @@ using LakshBeautyStudio.Data;
 using LakshBeautyStudio.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using CloudinaryDotNet;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var builder = WebApplication.CreateBuilder(args);
 
 // MVC
 builder.Services.AddControllersWithViews();
+var cloudinaryAccount = new Account(
+    builder.Configuration["Cloudinary:CloudName"],
+    builder.Configuration["Cloudinary:ApiKey"],
+    builder.Configuration["Cloudinary:ApiSecret"]
+);
+var cloudinary = new Cloudinary(cloudinaryAccount);
+cloudinary.Api.Secure = true;
+builder.Services.AddSingleton(cloudinary);
 
 // EF Core - SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
