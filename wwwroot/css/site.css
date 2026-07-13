@@ -2880,3 +2880,257 @@ img {
         padding: 0.3rem 0.65rem;
     }
 }
+/* ============================================================
+   PREMIUM SERVICE CARD REDESIGN
+   Drop this AFTER your existing .service-card rules in site.css.
+   Same markup, same tokens (--gold, --rose-gold, --charcoal, etc.)
+   Reuses keyframes already defined in your sheet: foilSweep,
+   gradientShift, sparkBurst, floatOrb — no new @keyframes needed
+   unless noted below.
+   ============================================================ */
+
+/* ---- grid breathing room ---- */
+.service-grid {
+    gap: 1.8rem;
+}
+
+/* ---- card shell: quiet by default, gold thread traces the
+   border on hover instead of a flat box-shadow lift ---- */
+.service-card {
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 0 0 1.6rem;
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), border-color 0.3s ease, box-shadow 0.4s ease;
+    animation: fadeUpIn 0.6s ease both;
+}
+
+    /* staggered entrance so the grid reveals left-to-right instead
+       of every card popping in at once */
+    .service-grid .service-card:nth-child(1) { animation-delay: 0s; }
+    .service-grid .service-card:nth-child(2) { animation-delay: 0.08s; }
+    .service-grid .service-card:nth-child(3) { animation-delay: 0.16s; }
+    .service-grid .service-card:nth-child(4) { animation-delay: 0.24s; }
+    .service-grid .service-card:nth-child(5) { animation-delay: 0.32s; }
+    .service-grid .service-card:nth-child(6) { animation-delay: 0.4s; }
+
+    .service-card:hover {
+        transform: translateY(-6px);
+        border-color: transparent;
+        box-shadow: 0 22px 40px rgba(17,17,17,0.1), 0 4px 14px rgba(212,175,55,0.18);
+    }
+
+    /* keyboard users get the same lift as mouse hover  -  covers
+       tabbing onto the "book" action inside the card */
+    .service-card:has(.btn:focus-visible) {
+        transform: translateY(-6px);
+        box-shadow: 0 22px 40px rgba(17,17,17,0.1), 0 4px 14px rgba(212,175,55,0.18);
+    }
+
+    /* the "gold thread" — a conic gradient ring masked down to a
+       1.5px outline, rotating slowly, only visible on hover */
+    .service-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 10px;
+        padding: 1.5px;
+        background: conic-gradient(from 0deg, var(--gold), transparent 30%, var(--rose-gold), transparent 70%, var(--gold));
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        animation: ringRotate 6s linear infinite;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .service-card:hover::after {
+        opacity: 1;
+    }
+
+/* ---- image: desaturated at rest, comes to life on hover, like
+   light hitting a portrait ---- */
+.service-card-img {
+    height: 170px;
+    margin-bottom: 1.3rem;
+    border-radius: 10px 10px 0 0;
+    position: relative;
+}
+
+    .service-card-img img {
+        filter: saturate(0.75) contrast(0.98);
+        transition: transform 0.6s cubic-bezier(0.22,1,0.36,1), filter 0.5s ease;
+    }
+
+    .service-card:hover .service-card-img img {
+        transform: scale(1.07);
+        filter: saturate(1.05) contrast(1);
+    }
+
+    /* soft gold vignette along the base of every image, ties the
+       photo to the palette even before hover */
+    .service-card-img::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(17,17,17,0.18), transparent 55%);
+        pointer-events: none;
+    }
+
+/* ---- eyebrow label above the title ---- */
+.cat-label {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    color: var(--rose-gold);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+    .cat-label::before {
+        content: '';
+        width: 16px;
+        height: 1px;
+        background: var(--gold);
+    }
+
+/* ---- title ---- */
+.service-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    transition: color 0.25s ease;
+}
+
+.service-card:hover h3 {
+    color: var(--rose-gold);
+}
+
+/* ---- price: foil-swept on hover instead of a flat gold color,
+   echoing the hero/counter treatment already in the sheet ---- */
+.service-card .price {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--rose-gold);
+    margin-bottom: 1.1rem;
+}
+
+.service-card:hover .price {
+    background: linear-gradient(100deg, var(--rose-gold) 30%, var(--gold-light) 48%, var(--white) 52%, var(--gold-light) 56%, var(--rose-gold) 74%);
+    background-size: 260% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: foilSweep 2.4s linear infinite;
+}
+
+/* ---- book button: swap the block gold fill for a quiet outline
+   that fills on hover — reads premium rather than "coupon" ---- */
+.service-card .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.65rem 1.3rem;
+    border: 1px solid var(--black);
+    background: transparent;
+    color: var(--black);
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    letter-spacing: 0.3px;
+    position: relative;
+    overflow: visible;
+    transition: background 0.25s ease, color 0.25s ease, gap 0.25s ease, transform 0.2s ease;
+}
+
+    .service-card .btn::after {
+        content: '\2192';
+        transition: transform 0.25s ease;
+    }
+
+    /* three gold flecks, same trick as .btn-gold, scaled down for
+       a secondary action so it's a whisper rather than a shout */
+    .service-card .btn::before {
+        content: '';
+        position: absolute;
+        inset: -6px;
+        background: radial-gradient(circle, var(--gold) 1.2px, transparent 1.3px) 15% 20%/6px 6px no-repeat, radial-gradient(circle, var(--rose-gold) 1.2px, transparent 1.3px) 85% 75%/6px 6px no-repeat;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .service-card .btn:hover::before {
+        animation: sparkBurst 0.6s ease-out;
+    }
+
+    .service-card .btn:hover {
+        background: var(--charcoal);
+        color: var(--gold);
+        gap: 0.6rem;
+    }
+
+    .service-card .btn:active {
+        transform: scale(0.96);
+    }
+
+/* ---- featured / signature card: one accent per grid, called out
+   with a corner ribbon instead of a loud border ---- */
+.service-card.is-signature {
+    border-color: var(--gold);
+}
+
+    .service-card.is-signature::before {
+        content: 'Signature';
+        position: absolute;
+        top: 14px;
+        left: -34px;
+        transform: rotate(-45deg);
+        background: var(--charcoal);
+        font-size: 0.68rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 0.25rem 2.4rem;
+        z-index: 3;
+        background-image: linear-gradient(100deg, var(--gold) 30%, var(--gold-light) 48%, var(--white) 52%, var(--gold-light) 56%, var(--gold) 74%), linear-gradient(var(--charcoal), var(--charcoal));
+        background-size: 260% auto, 100% 100%;
+        background-blend-mode: normal;
+        -webkit-background-clip: text, border-box;
+        -webkit-text-fill-color: transparent;
+        animation: foilSweep 3s linear infinite;
+    }
+
+    /* soft ambient glow behind the whole card so the signature
+       piece reads as lit rather than just labeled */
+    .service-card.is-signature {
+        animation: fadeUpIn 0.6s ease both, glowPulse 4s ease-in-out infinite;
+    }
+
+/* ---- category heading above each group of cards ---- */
+.category-title {
+    gap: 1rem;
+}
+
+.icon-chip {
+    box-shadow: 0 4px 14px rgba(212,175,55,0.3);
+    transition: transform 0.3s ease;
+}
+
+.category-title:hover .icon-chip {
+    transform: rotate(-8deg) scale(1.06);
+}
+
+/* ---- mobile: tighten the hover-only motion since touch has no
+   hover state — keep the card readable without it ---- */
+@media (max-width: 640px) {
+    .service-card::after {
+        display: none;
+    }
+
+    .service-card-img img {
+        filter: none;
+    }
+}
