@@ -1,0 +1,57 @@
+@model List<GalleryImage>
+@{
+    ViewData["Title"] = "Manage Gallery";
+    Layout = "_AdminLayout";
+}
+
+<h1 class="admin-page-title">Gallery</h1>
+
+<div class="crud-form">
+    <h3>&#10133; Upload New Image</h3>
+    <form asp-controller="AdminGallery" asp-action="Upload" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div class="crud-form-grid">
+            <div class="form-group">
+                <label>Image File (JPG/PNG/WEBP, max 5MB)</label>
+                <input type="file" name="file" accept=".jpg,.jpeg,.png,.webp" required />
+            </div>
+            <div class="form-group">
+                <label>Caption (optional)</label>
+                <input type="text" name="caption" placeholder="e.g. Bridal Makeup" />
+            </div>
+            <div class="form-group">
+                <label>Display Order</label>
+                <input type="number" name="displayOrder" value="@(Model.Count + 1)" />
+            </div>
+            <button type="submit" class="btn btn-gold btn-sm">Upload</button>
+        </div>
+    </form>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="empty-state">No images uploaded yet. Upload your first studio or client photo above.</p>
+}
+else
+{
+    <div class="gallery-admin-grid">
+        @foreach (var img in Model)
+        {
+            <div class="gallery-admin-card">
+                <img src="@img.ImagePath" alt="@img.Caption" />
+                <div class="g-actions">
+                    <form asp-controller="AdminGallery" asp-action="ToggleActive" method="post" class="inline-form">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@img.Id" />
+                        <button type="submit" class="btn-save">@(img.IsActive ? "Hide" : "Show")</button>
+                    </form>
+                    <form asp-controller="AdminGallery" asp-action="Delete" method="post" class="inline-form" onsubmit="return confirm('Delete this image permanently?');">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@img.Id" />
+                        <button type="submit" class="btn-delete">&#128465;</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,144 @@
+@using LakshBeautyStudio.Models
+@{
+    ViewData["Title"] = "Home";
+    var featuredServices = ViewBag.FeaturedServices as List<Service> ?? new List<Service>();
+    var testimonials = ViewBag.Testimonials as List<Testimonial> ?? new List<Testimonial>();
+}
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-sparkles">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <svg class="hero-flourish flourish-tl" viewBox="0 0 140 140" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M4 70C4 34 34 4 70 4M4 70C4 45 20 30 42 28M4 70C28 70 44 55 46 34" stroke-linecap="round"/>
+        <circle cx="70" cy="4" r="2.5" fill="currentColor" stroke="none"/>
+    </svg>
+    <svg class="hero-flourish flourish-br" viewBox="0 0 140 140" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M136 70C136 106 106 136 70 136M136 70C136 95 120 110 98 112M136 70C112 70 96 85 94 106" stroke-linecap="round"/>
+        <circle cx="70" cy="136" r="2.5" fill="currentColor" stroke="none"/>
+    </svg>
+
+    <div class="container hero-content">
+        <p class="eyebrow">Vadugapatti · Theni</p>
+        <h1>Enhance Your Natural Beauty <em>with Professional Care</em></h1>
+        <p class="hero-sub">Bridal Makeup &bull; Hair Styling &bull; Skin Care &bull; Nail Art</p>
+        <div class="hero-actions">
+            <a class="btn btn-gold" asp-controller="Appointment" asp-action="Book">Book Your Appointment Today</a>
+            <a class="btn btn-outline" href="tel:+919585885247">Call Us</a>
+        </div>
+    </div>
+</section>
+
+<!-- Counters -->
+<section class="counters">
+    <div class="container counters-grid">
+        <div class="counter-item"><span class="num">4+</span><span class="label">Years of Experience</span></div>
+        <div class="counter-item"><span class="num">1000+</span><span class="label">Happy Clients</span></div>
+        <div class="counter-item"><span class="num">500+</span><span class="label">Bridal Makeovers</span></div>
+        <div class="counter-item"><span class="num">25+</span><span class="label">Beauty &amp; Hair Services</span></div>
+        <div class="counter-item"><span class="num">4.9★</span><span class="label">Customer Rating</span></div>
+    </div>
+</section>
+
+<!-- Featured Services -->
+<section class="section">
+    <div class="container">
+        <p class="eyebrow center">What We Offer</p>
+        <h2 class="section-title center">Featured Services</h2>
+        <div class="service-grid">
+            @foreach (var service in featuredServices)
+            {
+                <div class="service-card featured-card">
+                    @if (!string.IsNullOrEmpty(service.ImagePath))
+                    {
+                        <div class="service-card-img">
+                            <img src="@service.ImagePath" alt="@service.Name" loading="lazy" />
+                            <span class="fc-badge">@service.Category?.Name</span>
+                            <span class="fc-price">₹@service.StartingPrice.ToString("N0")</span>
+                        </div>
+                    }
+                    <div class="fc-body">
+                        <h3>@service.Name</h3>
+                        <a class="fc-book" asp-controller="Appointment" asp-action="Book" asp-route-service="@service.Name">
+                            Book This <span class="fc-arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="center" style="margin-top:2rem;">
+            <a class="btn btn-gold" asp-controller="Home" asp-action="Services">View All Services</a>
+        </div>
+    </div>
+</section>
+
+<!-- Bridal Glow Offer -->
+<section class="section offer-banner">
+    <div class="container offer-banner-inner">
+        <div>
+            <p class="eyebrow">Featured Offer</p>
+            <h2>Bridal Glow Package — Starting from ₹11,999</h2>
+            <p>Bridal Makeup · Bridal Hairstyling · Saree Draping · Basic Touch-up Kit</p>
+        </div>
+        <a class="btn btn-gold" asp-controller="Home" asp-action="Offers">See All Offers</a>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="section testimonials">
+    <div class="container">
+        <p class="eyebrow center">Client Love</p>
+        <h2 class="section-title center">What Our Clients Say</h2>
+        <div class="testimonial-grid">
+            @if (testimonials.Any())
+            {
+                foreach (var t in testimonials)
+                {
+                    <div class="testimonial-card">
+                        <div class="stars">@string.Concat(Enumerable.Repeat("★", t.Rating))</div>
+                        <p>"@t.ReviewText"</p>
+                        <span class="t-name">- @t.CustomerName</span>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Amazing Bridal Makeup, felt like a princess on my wedding day!"</p>
+                    <span class="t-name">- Mrs. Priya</span>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Very professional staff and clean studio. Loved the hair spa!"</p>
+                    <span class="t-name">- Mrs. Kavya</span>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Best beauty parlour in Theni. Highly recommend for bridal packages."</p>
+                    <span class="t-name">- Mrs. Divya</span>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Teaser -->
+<section class="section faq-teaser">
+    <div class="container center">
+        <h2 class="section-title">Got Questions?</h2>
+        <p>Find answers to common questions about appointments, services and packages.</p>
+        <a class="btn btn-outline" asp-controller="Home" asp-action="FAQPage">Read FAQs</a>
+    </div>
+</section>
+
+<!-- Final CTA -->
+<section class="final-cta">
+    <div class="container center">
+        <h2>Ready to Look &amp; Feel Your Best?</h2>
+        <a class="btn btn-gold btn-lg" asp-controller="Appointment" asp-action="Book">Book Your Appointment</a>
+    </div>
+</section>

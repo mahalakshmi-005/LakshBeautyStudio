@@ -1,0 +1,70 @@
+@model List<Package>
+@{
+    ViewData["Title"] = "Manage Packages";
+    Layout = "_AdminLayout";
+}
+
+<h1 class="admin-page-title">Packages</h1>
+
+<div class="crud-form">
+    <h3>&#10133; Add New Package</h3>
+    <form asp-controller="AdminPackages" asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div class="crud-form-grid">
+            <div class="form-group">
+                <label>Package Name</label>
+                <input type="text" name="name" required />
+            </div>
+            <div class="form-group">
+                <label>Price (Rs.)</label>
+                <input type="number" name="price" step="0.01" required />
+            </div>
+            <div class="form-group">
+                <label>Display Order</label>
+                <input type="number" name="displayOrder" value="@(Model.Count + 1)" />
+            </div>
+            <div class="form-group">
+                <label>Description (optional)</label>
+                <input type="text" name="description" />
+            </div>
+            <button type="submit" class="btn btn-gold btn-sm">Add Package</button>
+        </div>
+    </form>
+</div>
+
+@foreach (var pkg in Model)
+{
+    <form id="edit-package-@pkg.Id" asp-controller="AdminPackages" asp-action="Edit" method="post" style="display:none;">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@pkg.Id" />
+    </form>
+}
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr><th>Name</th><th>Price</th><th>Description</th><th>Order</th><th>Active</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var pkg in Model)
+            {
+                var formId = "edit-package-" + pkg.Id;
+                <tr>
+                    <td><input type="text" name="name" value="@pkg.Name" form="@formId" /></td>
+                    <td><input type="number" name="price" value="@pkg.Price" step="0.01" form="@formId" style="width:100px;" /></td>
+                    <td><input type="text" name="description" value="@pkg.Description" form="@formId" /></td>
+                    <td><input type="number" name="displayOrder" value="@pkg.DisplayOrder" form="@formId" style="width:60px;" /></td>
+                    <td><input type="checkbox" name="isActive" value="true" checked="@pkg.IsActive" form="@formId" /></td>
+                    <td class="actions-cell">
+                        <button type="submit" form="@formId" class="btn-save">Save</button>
+                        <form asp-controller="AdminPackages" asp-action="Delete" method="post" class="inline-form" onsubmit="return confirm('Delete this package?');">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@pkg.Id" />
+                            <button type="submit" class="btn-delete">&#128465;</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

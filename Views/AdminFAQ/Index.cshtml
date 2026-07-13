@@ -1,0 +1,65 @@
+@model List<FAQ>
+@{
+    ViewData["Title"] = "Manage FAQs";
+    Layout = "_AdminLayout";
+}
+
+<h1 class="admin-page-title">FAQs</h1>
+
+<div class="crud-form">
+    <h3>&#10133; Add New FAQ</h3>
+    <form asp-controller="AdminFAQ" asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div class="crud-form-grid">
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Question</label>
+                <input type="text" name="question" required />
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Answer</label>
+                <textarea name="answer" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Display Order</label>
+                <input type="number" name="displayOrder" value="@(Model.Count + 1)" />
+            </div>
+            <button type="submit" class="btn btn-gold btn-sm">Add FAQ</button>
+        </div>
+    </form>
+</div>
+
+@foreach (var faq in Model)
+{
+    <form id="edit-faq-@faq.Id" asp-controller="AdminFAQ" asp-action="Edit" method="post" style="display:none;">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@faq.Id" />
+    </form>
+}
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr><th>Question</th><th>Answer</th><th>Order</th><th>Active</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var faq in Model)
+            {
+                var formId = "edit-faq-" + faq.Id;
+                <tr>
+                    <td><input type="text" name="question" value="@faq.Question" form="@formId" style="width:220px;" /></td>
+                    <td><input type="text" name="answer" value="@faq.Answer" form="@formId" style="width:280px;" /></td>
+                    <td><input type="number" name="displayOrder" value="@faq.DisplayOrder" form="@formId" style="width:60px;" /></td>
+                    <td><input type="checkbox" name="isActive" value="true" checked="@faq.IsActive" form="@formId" /></td>
+                    <td class="actions-cell">
+                        <button type="submit" form="@formId" class="btn-save">Save</button>
+                        <form asp-controller="AdminFAQ" asp-action="Delete" method="post" class="inline-form" onsubmit="return confirm('Delete this FAQ?');">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@faq.Id" />
+                            <button type="submit" class="btn-delete">&#128465;</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

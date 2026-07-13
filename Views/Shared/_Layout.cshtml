@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Laksh Beauty and Bridal Studio</title>
+    <meta name="description" content="Laksh Beauty and Bridal Studio, Vadugapatti, Theni - Bridal Makeup, Hair Styling, Skin Care, Nail Art. Best Beauty Parlour in Theni." />
+    <meta name="keywords" content="Beauty Parlour in Vadugapatti, Bridal Makeup in Theni, Hair Spa in Theni, Best Beauty Parlour in Theni, Professional Makeup Artist Theni" />
+    <link rel="icon" type="image/png" href="~/images/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-ring">
+            <span class="loader-crown">
+                <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.4">
+                    <path d="M3 8l3.5 3L12 6l5.5 5L21 8l-2 10H5L3 8z" stroke-linejoin="round" stroke-linecap="round"/>
+                </svg>
+            </span>
+        </div>
+        <div class="loader-mark">Laksh Beauty</div>
+        <div class="loader-sub">&amp; Bridal Studio</div>
+    </div>
+
+    <!-- Header -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <a class="brand" asp-controller="Home" asp-action="Index">
+                <span class="brand-mark">LB</span>
+                <span class="brand-text">Laksh <em>Beauty &amp; Bridal Studio</em></span>
+            </a>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="site-nav" id="siteNav">
+                <a asp-controller="Home" asp-action="Index">Home</a>
+                <a asp-controller="Home" asp-action="Services">Services</a>
+                <a asp-controller="Home" asp-action="Pricing">Pricing</a>
+                <a asp-controller="Home" asp-action="Offers">Offers</a>
+                <a asp-controller="Home" asp-action="Gallery">Gallery</a>
+                <a asp-controller="Home" asp-action="About">About</a>
+                <a asp-controller="Home" asp-action="FAQPage">FAQ</a>
+                <a asp-controller="Home" asp-action="Contact">Contact</a>
+                <a class="nav-cta" asp-controller="Appointment" asp-action="Book">Book Now</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="brand footer-brand">
+                    <span class="brand-mark">LB</span>
+                    <span class="brand-text">Laksh <em>Beauty &amp; Bridal Studio</em></span>
+                </div>
+                <p>Where beauty meets elegance. 4+ years of professional bridal &amp; beauty care in Theni.</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <a asp-controller="Home" asp-action="Services">Services</a>
+                <a asp-controller="Home" asp-action="Pricing">Pricing</a>
+                <a asp-controller="Home" asp-action="Offers">Offers</a>
+                <a asp-controller="Home" asp-action="Gallery">Gallery</a>
+                <a asp-controller="Home" asp-action="FAQPage">FAQ</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <a href="tel:+919585885247">📞 95858 85247</a>
+                <a href="https://api.whatsapp.com/send?phone=919585885247" target="_blank" rel="noopener">💬 WhatsApp Us</a>
+                <a href="mailto:laxxk43@gmail.com">✉️ laxxk43@gmail.com</a>
+                <p>📍 Emmanual Church Street, Vadugapatti, Theni DT</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Working Hours</h4>
+                <p>Morning: 9:00 AM – 2:00 PM</p>
+                <p>Evening: 3:00 PM – 7:00 PM</p>
+                <a href="https://maps.app.goo.gl/jJ9UNzwCnco1W7HW9" target="_blank" rel="noopener" class="map-link">View on Google Maps →</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Laksh Beauty and Bridal Studio. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://api.whatsapp.com/send?phone=919585885247&amp;text=Hello%2C%20I%20would%20like%20to%20book%20an%20appointment."
+       target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp">
+        <svg viewBox="0 0 32 32" width="28" height="28" fill="currentColor"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.3.6 4.5 1.8 6.4L4 29l7.8-1.7c1.9 1 4 1.6 6.2 1.6 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-2 0-3.9-.5-5.6-1.5l-.4-.2-4.6 1 1-4.5-.3-.4C4.9 17.7 4.3 16.4 4.3 15c0-6.5 5.3-11.7 11.7-11.7S27.7 8.5 27.7 15 22.4 24.8 16 24.8zm6.4-8.8c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1.1 1.3-.2.2-.4.3-.7.1-.3-.2-1.4-.5-2.7-1.7-1-.9-1.7-2-1.9-2.3-.2-.3 0-.5.1-.7.2-.2.4-.4.6-.6.2-.2.2-.3.3-.6.1-.2 0-.5 0-.7 0-.2-.8-2-1.1-2.7-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.3 2.4 3.6 5.7 5 .8.3 1.4.5 1.9.7.8.2 1.5.2 2.1.1.6-.1 2-.8 2.3-1.6.3-.8.3-1.4.2-1.6-.1-.1-.3-.2-.6-.4z"/></svg>
+    </a>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

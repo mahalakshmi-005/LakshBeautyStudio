@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin - Laksh Beauty Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="admin-body">
+    <div class="admin-shell">
+        <button class="admin-nav-toggle" id="adminNavToggle" aria-label="Toggle menu">☰</button>
+        <aside class="admin-sidebar">
+            <div class="brand admin-brand">
+                <span class="brand-mark">LB</span>
+                <span class="brand-text">Admin Panel</span>
+            </div>
+            <nav class="admin-nav">
+                <a asp-controller="Admin" asp-action="Dashboard">📊 Dashboard</a>
+                <a asp-controller="Admin" asp-action="Appointments">📅 Appointments</a>
+                <a asp-controller="AdminServices" asp-action="Index">💇 Services</a>
+                <a asp-controller="AdminServices" asp-action="Categories">🗂️ Categories</a>
+                <a asp-controller="AdminPackages" asp-action="Index">💎 Packages</a>
+                <a asp-controller="AdminTestimonials" asp-action="Index">⭐ Testimonials</a>
+                <a asp-controller="AdminFAQ" asp-action="Index">❓ FAQs</a>
+                <a asp-controller="AdminGallery" asp-action="Index">🖼️ Gallery</a>
+                <a asp-controller="Admin" asp-action="ChangePassword">🔑 Change Password</a>
+                <a asp-controller="Home" asp-action="Index" target="_blank">🌐 View Website</a>
+            </nav>
+            <a asp-controller="Admin" asp-action="Logout" class="admin-logout">🚪 Logout</a>
+        </aside>
+
+        <main class="admin-main">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert-success">@TempData["Success"]</div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert-error-box">@TempData["Error"]</div>
+            }
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

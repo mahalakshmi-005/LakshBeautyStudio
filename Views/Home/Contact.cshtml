@@ -1,0 +1,69 @@
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Get In Touch</p>
+        <h1>Contact Us</h1>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container contact-layout">
+        <div class="contact-info">
+            <h2 class="section-title">Visit Our Studio</h2>
+
+            <div class="contact-item">
+                <span class="c-icon">📍</span>
+                <div>
+                    <h4>Address</h4>
+                    <p>Emmanual Church Street, Vadugapatti, Theni DT</p>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <span class="c-icon">📞</span>
+                <div>
+                    <h4>Phone</h4>
+                    <a href="tel:+919585885247">95858 85247</a>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <span class="c-icon">💬</span>
+                <div>
+                    <h4>WhatsApp</h4>
+                    <a href="https://api.whatsapp.com/send?phone=919585885247&amp;text=Hello%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Chat with us</a>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <span class="c-icon">✉️</span>
+                <div>
+                    <h4>Email</h4>
+                    <a href="mailto:laxxk43@gmail.com">laxxk43@gmail.com</a>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <span class="c-icon">🕒</span>
+                <div>
+                    <h4>Working Hours</h4>
+                    <p>Morning: 9:00 AM – 2:00 PM</p>
+                    <p>Evening: 3:00 PM – 7:00 PM</p>
+                </div>
+            </div>
+
+            <a class="btn btn-gold" asp-controller="Appointment" asp-action="Book" style="margin-top:1rem;">Book an Appointment</a>
+        </div>
+
+        <div class="contact-map">
+            <iframe
+                src="https://www.google.com/maps?q=Emmanual+Church+Street,+Vadugapatti,+Theni&output=embed"
+                width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade" title="Laksh Beauty and Bridal Studio Location">
+            </iframe>
+        </div>
+    </div>
+</section>

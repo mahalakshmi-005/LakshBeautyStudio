@@ -1,0 +1,63 @@
+@model List<GalleryImage>
+@{
+    ViewData["Title"] = "Creative Gallery";
+}
+
+<section class="gallery-hero-section">
+    <div class="hero-blur-bg"></div>
+    <div class="container container-center">
+        <span class="premium-eyebrow">Visual Storytelling</span>
+        <h1 class="glare-text">Our Portfolio</h1>
+        <p class="hero-subtitle">A curated collection of elegance, premium bridal transformations, and studio artistry.</p>
+    </div>
+</section>
+
+<section class="gallery-main-section">
+    <div class="container">
+        @if (!Model.Any())
+        {
+            <div class="modern-placeholder-grid">
+                @for (int i = 0; i < 6; i++)
+                {
+                    <div class="glass-frame-placeholder" style="--delay: @(i * 0.1)s">
+                        <div class="shimmer-effect"></div>
+                        <div class="icon-wrapper">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+                                <rect x="6" y="8" width="36" height="32" rx="4" stroke-linejoin="round" />
+                                <circle cx="18" cy="18" r="3.5" />
+                                <path d="M6 34l9-9 7 7 8-7 12 10" stroke-linejoin="round" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <span class="placeholder-text">Artistry In Progress</span>
+                    </div>
+                }
+            </div>
+
+            <div class="empty-state-card">
+                <p class="gallery-note">Our stylized lookbook is currently undergoing a creative update. Explore our live updates and direct portfolio showcase instantly on WhatsApp.</p>
+                <div class="btn-group-center">
+                    <a class="btn-premium-action" href="https://api.whatsapp.com/send?phone=919585885247&amp;text=Hi%2C%20can%20I%20see%20some%20of%20your%20recent%20bridal%20makeup%20work%3F" target="_blank" rel="noopener">
+                        <span>Consult via WhatsApp</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                    </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="creative-gallery-grid">
+                @foreach (var image in Model)
+                {
+                    <div class="creative-gallery-item">
+                        <div class="image-overflow-shield">
+                            <img src="@image.ImagePath" alt="@(image.Caption ?? "Laksh Beauty and Bridal Studio")" loading="lazy" />
+                            <div class="image-overlay-reveal">
+                                <span class="overlay-caption">@(image.Caption ?? "Signature Transformation")</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>

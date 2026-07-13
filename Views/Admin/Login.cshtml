@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Admin Login";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - Laksh Beauty Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="admin-login-body">
+    <div class="admin-login-card">
+        <div class="brand center-brand">
+            <span class="brand-mark">LB</span>
+        </div>
+        <h1>Admin Login</h1>
+        <p class="admin-sub">Laksh Beauty and Bridal Studio</p>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert-error">@ViewBag.Error</div>
+        }
+
+        <form asp-controller="Admin" asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" required autofocus />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" required />
+            </div>
+            <button type="submit" class="btn btn-gold btn-block">Login</button>
+        </form>
+
+        <a asp-controller="Home" asp-action="Index" class="back-link">← Back to Website</a>
+    </div>
+</body>
+</html>

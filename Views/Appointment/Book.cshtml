@@ -1,0 +1,119 @@
+@model AppointmentViewModel
+@{
+    ViewData["Title"] = "Book Appointment";
+    var minDate = DateTime.Today.ToString("yyyy-MM-dd");
+}
+
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Reserve Your Slot</p>
+        <h1>Book Your Appointment</h1>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container booking-layout">
+        <form asp-controller="Appointment" asp-action="Book" method="post" class="booking-form">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="All" class="validation-summary"></div>
+
+            <div class="form-group">
+                <label asp-for="Name">Full Name</label>
+                <input asp-for="Name" placeholder="Your name" />
+                <span asp-validation-for="Name" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Phone">Phone Number</label>
+                <input asp-for="Phone" placeholder="10-digit mobile number" maxlength="10" />
+                <span asp-validation-for="Phone" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Service">Service</label>
+                <input asp-for="Service" placeholder="e.g. Bridal Makeup, Hair Spa" list="serviceList" />
+                <datalist id="serviceList">
+                    <option value="Hair Cut"></option>
+                    <option value="Hair Spa"></option>
+                    <option value="Bridal Hair Styling"></option>
+                    <option value="Bridal Makeup"></option>
+                    <option value="Party Makeup"></option>
+                    <option value="Hydra Facial"></option>
+                    <option value="Cleanup"></option>
+                    <option value="Manicure"></option>
+                    <option value="Pedicure"></option>
+                    <option value="Eyebrow Threading"></option>
+                    <option value="Eyelash Extensions"></option>
+                    <option value="Full Body Waxing"></option>
+                </datalist>
+                <span asp-validation-for="Service" class="field-error"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="PreferredDate">Preferred Date</label>
+                    <input asp-for="PreferredDate" type="date" min="@minDate" />
+                    <span asp-validation-for="PreferredDate" class="field-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PreferredTime">Preferred Time</label>
+                    <select asp-for="PreferredTime" id="timeSelect">
+                        <option value="">-- Select Time --</option>
+                        <optgroup label="Morning (9 AM - 2 PM)">
+                            <option value="09:00">9:00 AM</option>
+                            <option value="09:30">9:30 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="10:30">10:30 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="11:30">11:30 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="12:30">12:30 PM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="13:30">1:30 PM</option>
+                        </optgroup>
+                        <optgroup label="Evening (3 PM - 7 PM)">
+                            <option value="15:00">3:00 PM</option>
+                            <option value="15:30">3:30 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                            <option value="16:30">4:30 PM</option>
+                            <option value="17:00">5:00 PM</option>
+                            <option value="17:30">5:30 PM</option>
+                            <option value="18:00">6:00 PM</option>
+                            <option value="18:30">6:30 PM</option>
+                        </optgroup>
+                    </select>
+                    <span asp-validation-for="PreferredTime" class="field-error"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Message">Message (Optional)</label>
+                <textarea asp-for="Message" rows="3" placeholder="Any special request..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-gold btn-block">Book Appointment &amp; Confirm on WhatsApp</button>
+        </form>
+
+        <div class="booking-side">
+            <div class="side-card">
+                <h4>📞 Prefer to Call?</h4>
+                <a href="tel:+919585885247" class="btn btn-outline btn-block">95858 85247</a>
+            </div>
+            <div class="side-card">
+                <h4>💬 Prefer WhatsApp?</h4>
+                <a href="https://api.whatsapp.com/send?phone=919585885247&amp;text=Hello%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="btn btn-outline btn-block">Chat on WhatsApp</a>
+            </div>
+            <div class="side-card">
+                <h4>🕒 Working Hours</h4>
+                <p>Morning: 9:00 AM – 2:00 PM</p>
+                <p>Evening: 3:00 PM – 7:00 PM</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

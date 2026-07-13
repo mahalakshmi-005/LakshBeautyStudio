@@ -1,0 +1,104 @@
+@model List<Service>
+@{
+    ViewData["Title"] = "Manage Services";
+    Layout = "_AdminLayout";
+    var categories = ViewBag.Categories as List<ServiceCategory> ?? new List<ServiceCategory>();
+}
+
+<h1 class="admin-page-title">Services</h1>
+<p style="color:var(--text-muted); margin-bottom:1.5rem;">@Model.Count services total. <a asp-controller="AdminServices" asp-action="Categories" style="color:var(--rose-gold);">Manage Categories &rarr;</a></p>
+
+<div class="crud-form">
+    <h3>&#10133; Add New Service</h3>
+    <form asp-controller="AdminServices" asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div class="crud-form-grid">
+            <div class="form-group">
+                <label>Service Name</label>
+                <input type="text" name="Name" required />
+            </div>
+            <div class="form-group">
+                <label>Starting Price (Rs.)</label>
+                <input type="number" name="StartingPrice" step="0.01" required />
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select name="CategoryId" required>
+                    @foreach (var cat in categories)
+                    {
+                        <option value="@cat.Id">@cat.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Image URL (optional)</label>
+                <input type="text" name="ImagePath" placeholder="Leave blank to use category default" />
+            </div>
+            <div class="form-group checkbox-group">
+                <input type="checkbox" name="IsFeatured" id="isFeatured" value="true" />
+                <label for="isFeatured">Show on Homepage</label>
+            </div>
+            <button type="submit" class="btn btn-gold btn-sm">Add Service</button>
+        </div>
+    </form>
+</div>
+
+@foreach (var cat in categories)
+{
+    var catServices = Model.Where(s => s.CategoryId == cat.Id).ToList();
+    if (catServices.Any())
+    {
+        <h2 class="admin-section-title">@cat.Icon @cat.Name (@catServices.Count)</h2>
+
+        @* Edit forms placed outside the table; inputs reference them via form="" attribute (valid HTML5) *@
+        foreach (var s in catServices)
+        {
+            <form id="edit-service-@s.Id" asp-controller="AdminServices" asp-action="Edit" method="post" style="display:none;">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@s.Id" />
+            </form>
+        }
+
+        <div class="admin-table-wrap" style="margin-bottom:2rem;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Image</th><th>Name</th><th>Price</th><th>Featured</th><th>Active</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in catServices)
+                    {
+                        var formId = "edit-service-" + s.Id;
+                        <tr>
+                            <td><img src="@s.ImagePath" alt="@s.Name" class="thumb-preview" /></td>
+                            <td>
+                                <input type="text" name="name" value="@s.Name" form="@formId" style="margin-bottom:0.3rem;" />
+                                <input type="text" name="imagePath" value="@s.ImagePath" form="@formId" placeholder="Image URL" style="font-size:0.75rem;" />
+                            </td>
+                            <td><input type="number" name="startingPrice" value="@s.StartingPrice" step="0.01" form="@formId" /></td>
+                            <td>
+                                <select name="categoryId" form="@formId" style="width:80px;">
+                                    @foreach (var c2 in categories)
+                                    {
+                                        <option value="@c2.Id" selected="@(c2.Id == s.CategoryId)">@c2.Name</option>
+                                    }
+                                </select>
+                                <input type="checkbox" name="isFeatured" value="true" checked="@s.IsFeatured" form="@formId" />
+                            </td>
+                            <td><input type="checkbox" name="isActive" value="true" checked="@s.IsActive" form="@formId" /></td>
+                            <td class="actions-cell">
+                                <button type="submit" form="@formId" class="btn-save">Save</button>
+                                <form asp-controller="AdminServices" asp-action="Delete" method="post" class="inline-form" onsubmit="return confirm('Delete this service?');">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@s.Id" />
+                                    <button type="submit" class="btn-delete">&#128465;</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

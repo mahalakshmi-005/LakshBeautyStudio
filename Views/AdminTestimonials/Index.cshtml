@@ -1,0 +1,70 @@
+@model List<Testimonial>
+@{
+    ViewData["Title"] = "Manage Testimonials";
+    Layout = "_AdminLayout";
+}
+
+<h1 class="admin-page-title">Testimonials</h1>
+
+<div class="crud-form">
+    <h3>&#10133; Add New Testimonial</h3>
+    <form asp-controller="AdminTestimonials" asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div class="crud-form-grid">
+            <div class="form-group">
+                <label>Customer Name</label>
+                <input type="text" name="customerName" required />
+            </div>
+            <div class="form-group">
+                <label>Rating (1-5)</label>
+                <select name="rating">
+                    <option value="5" selected>5 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="2">2 Stars</option>
+                    <option value="1">1 Star</option>
+                </select>
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Review Text</label>
+                <textarea name="reviewText" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-gold btn-sm">Add Testimonial</button>
+        </div>
+    </form>
+</div>
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr><th>Customer</th><th>Rating</th><th>Review</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="5" class="empty-state">No testimonials yet. Add your first client review above.</td></tr>
+            }
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td>@t.CustomerName</td>
+                    <td>@string.Concat(Enumerable.Repeat("★", t.Rating))</td>
+                    <td>@t.ReviewText</td>
+                    <td><span class="status-badge @(t.IsActive ? "status-confirmed" : "status-cancelled")">@(t.IsActive ? "Live" : "Hidden")</span></td>
+                    <td class="actions-cell">
+                        <form asp-controller="AdminTestimonials" asp-action="ToggleActive" method="post" class="inline-form">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@t.Id" />
+                            <button type="submit" class="btn-save">@(t.IsActive ? "Hide" : "Show")</button>
+                        </form>
+                        <form asp-controller="AdminTestimonials" asp-action="Delete" method="post" class="inline-form" onsubmit="return confirm('Delete this testimonial?');">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@t.Id" />
+                            <button type="submit" class="btn-delete">&#128465;</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

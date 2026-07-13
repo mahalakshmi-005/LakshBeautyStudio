@@ -1,0 +1,57 @@
+@model List<Appointment>
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<h1 class="admin-page-title">Dashboard</h1>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <span class="stat-num">@ViewBag.TodayCount</span>
+        <span class="stat-label">Today's Appointments</span>
+    </div>
+    <div class="stat-card highlight">
+        <span class="stat-num">@ViewBag.PendingCount</span>
+        <span class="stat-label">Pending</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-num">@ViewBag.MonthCount</span>
+        <span class="stat-label">This Month</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-num">@ViewBag.TotalServices</span>
+        <span class="stat-label">Active Services</span>
+    </div>
+</div>
+
+<h2 class="admin-section-title">Recent Appointments</h2>
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in Model)
+            {
+                <tr>
+                    <td>@a.Name</td>
+                    <td>@a.Phone</td>
+                    <td>@a.Service</td>
+                    <td>@a.PreferredDate.ToString("dd-MM-yyyy")</td>
+                    <td>@a.PreferredTime</td>
+                    <td><span class="status-badge status-@a.Status.ToString().ToLower()">@a.Status</span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<a asp-controller="Admin" asp-action="Appointments" class="btn btn-gold" style="margin-top:1.5rem;display:inline-block;">View All Appointments</a>

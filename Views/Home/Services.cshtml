@@ -1,0 +1,40 @@
+@model List<ServiceCategory>
+@{
+    ViewData["Title"] = "Our Services";
+}
+
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">What We Offer</p>
+        <h1>All Services</h1>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        @if (!Model.Any())
+        {
+            <p class="empty-state">Services will be listed here soon. Please contact us for current service details.</p>
+        }
+        @foreach (var category in Model)
+        {
+            <div class="category-block">
+                <h2 class="category-title"><span class="icon-chip">@category.Icon</span> @category.Name</h2>
+                <div class="service-grid">
+                    @foreach (var service in category.Services)
+                    {
+                        <div class="service-card">
+                            @if (!string.IsNullOrEmpty(service.ImagePath))
+                            {
+                                <div class="service-card-img"><img src="@service.ImagePath" alt="@service.Name" loading="lazy" /></div>
+                            }
+                            <h3>@service.Name</h3>
+                            <p class="price">Starting ₹@service.StartingPrice.ToString("N0")</p>
+                            <a class="btn btn-outline btn-sm" asp-controller="Appointment" asp-action="Book" asp-route-service="@service.Name">Book This</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</section>

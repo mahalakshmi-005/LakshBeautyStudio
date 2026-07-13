@@ -1,0 +1,91 @@
+@{
+    ViewData["Title"] = "Offers";
+}
+
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Special Deals</p>
+        <h1>Featured Offers</h1>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container offer-grid">
+
+        <div class="offer-card">
+            <h3>👰 Bridal Glow Package</h3>
+            <p class="offer-price">Starting from ₹11,999</p>
+            <p>Bridal Makeup, Bridal Hairstyling, Saree Draping, Basic Touch-up Kit</p>
+        </div>
+
+        <div class="offer-card">
+            <h3>💄 Party Glam Offer</h3>
+            <p class="offer-price">₹2,499 <span class="save">Save ₹500</span></p>
+            <p>Party Makeup + Hair Styling</p>
+        </div>
+
+        <div class="offer-card">
+            <h3>💇 Hair Care Combo</h3>
+            <p class="offer-price">Starting at ₹999</p>
+            <p>Hair Spa + Hair Cut</p>
+        </div>
+
+        <div class="offer-card">
+            <h3>✨ Skin Glow Combo</h3>
+            <p class="offer-price">₹999</p>
+            <p>Cleanup + De-Tan Treatment</p>
+        </div>
+
+        <div class="offer-card">
+            <h3>💅 Nail Beauty Combo</h3>
+            <p class="offer-price">₹999</p>
+            <p>Manicure + Pedicure</p>
+        </div>
+
+        <div class="offer-card">
+            <h3>🎉 Birthday Special</h3>
+            <p class="offer-price">10% OFF</p>
+            <p>On any beauty service. Valid within 7 days before/after your birthday with ID proof.</p>
+        </div>
+
+        <div class="offer-card">
+            <h3>👭 Bring a Friend</h3>
+            <p class="offer-price">10% OFF</p>
+            <p>Bring a friend for any service and both receive 10% OFF on eligible services.</p>
+        </div>
+
+        <div class="offer-card">
+            <h3>📅 Weekday Beauty Offer</h3>
+            <p class="offer-price">10% OFF</p>
+            <p>Visit Monday to Thursday and get 10% OFF on services above ₹1,500.</p>
+        </div>
+
+        <div class="offer-card">
+            <h3>💖 Self-Care Package</h3>
+            <p class="offer-price">5% OFF</p>
+            <p>Choose any 3 services and receive 5% OFF on the total bill.</p>
+        </div>
+
+        <div class="offer-card">
+            <h3>👑 Bridal Consultation</h3>
+            <p class="offer-price">Free</p>
+            <p>Free Bridal Consultation with every bridal makeup booking.</p>
+        </div>
+
+    </div>
+
+    <div class="container">
+        <div class="terms-box">
+            <h4>📌 Terms &amp; Conditions</h4>
+            <ul>
+                <li>Offers cannot be combined with other discounts.</li>
+                <li>Offers are subject to appointment availability.</li>
+                <li>Bridal packages require advance booking.</li>
+                <li>Discounts apply only to eligible services.</li>
+            </ul>
+        </div>
+        <div class="center" style="margin-top:2rem;">
+            <a class="btn btn-gold" asp-controller="Appointment" asp-action="Book">Claim This Offer</a>
+        </div>
+    </div>
+</section>

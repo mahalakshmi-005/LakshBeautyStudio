@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "Booking Confirmed";
+    var whatsAppUrl = ViewBag.WhatsAppUrl as string ?? "https://api.whatsapp.com/send?phone=919585885247";
+    var customerName = ViewBag.CustomerName as string ?? "there";
+}
+
+<section class="section confirmation-section">
+    <div class="container center">
+        <div class="confirm-icon">✅</div>
+        <h1>Thank You, @customerName!</h1>
+        <p>Your appointment request has been received. We're redirecting you to WhatsApp to confirm the details with us directly.</p>
+
+        <div class="redirect-note" id="redirectNote">Redirecting in <span id="countdown">3</span>...</div>
+
+        <a href="@whatsAppUrl" id="whatsAppFallback" class="btn btn-gold btn-lg" target="_blank" rel="noopener">Open WhatsApp Now</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline">Back to Home</a>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        let seconds = 3;
+        const countdownEl = document.getElementById('countdown');
+        const timer = setInterval(() => {
+            seconds--;
+            if (countdownEl) countdownEl.textContent = seconds;
+            if (seconds <= 0) {
+                clearInterval(timer);
+                window.location.href = "@Html.Raw(whatsAppUrl)";
+            }
+        }, 1000);
+    </script>
+}
